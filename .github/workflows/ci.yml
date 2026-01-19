@@ -23,6 +23,14 @@ jobs:
             exit 1
           fi
 
+      - name: ⚙️ 配置环境变量 (Setup Env)
+        run: |
+          if [ -f "backend/.env.example" ]; then
+            cp backend/.env.example backend/.env
+          else
+            touch backend/.env
+          fi
+
       - name: 🔍 验证配置有效性 (Config Check)
         run: docker compose config
         
