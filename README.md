@@ -1,96 +1,141 @@
-# 🚀 Prompt2Repo 准入考核 (Entrance Challenge)
+# Tarn Bulletin Board
 
-## 📌 考核背景
-本项目寻找具备 **"AI Native" (Vibe Coding)** 能力的资深工程师。我们需要你展示如何利用 **Cursor / Trae / Claude Code** 等 AI 工具，快速构建**工程化标准**的应用。
+这是一个基于 React + TypeScript + Vite + tailwindcss + shadcn/ui + FastAPI + Python + MySQL 构建的全栈看板应用。
 
-> **核心考核点**：
-> 1. **AI 驾驭能力**：不仅是生成代码，而是生成架构、调试 Bug、优化工程。
-> 2. **Docker 交付标准**：强制容器化交付，拒绝“在我本地能跑”的代码。
-> 3. **全栈审美**：拒绝简陋 UI，需具备商业级交付意识。
+## 🚀 快速启动 (Docker)
 
----
+使用 Docker Compose 可以一键启动所有服务（前端、后端、数据库）。
 
-## 🎯 题目菜单 (任选其一)
+### 前置要求
+1.  **安装 Docker Desktop**: 请访问 [Docker 官网](https://www.docker.com/products/docker-desktop/) 下载并安装 Docker Desktop for Mac。
+2.  **启动 Docker**: 安装完成后，请确保 Docker Desktop 应用程序正在运行。
+3.  **验证安装**: 在终端运行 `docker --version` 确保 Docker 命令可用。
 
-请根据你的技术栈，从以下 5 个题目中**任选 1 个**完成。
+### 启动命令
 
-### A 纯前端：动态主题仪表盘 (SaaS Dashboard)
-* **目标**：构建一个销售数据看板，支持 Light/Dark 主题切换。
-* **技术**：React/Vue + Echarts/Recharts + **Tailwind/AntD (必选)**。
-* **交付**：将前端静态资源或服务容器化，实现一键启动。
+你可以直接使用提供的 `docker compose` 或 `Makefile` 命令：
 
-### B 纯后端：短链接生成服务 (URL Shortener)
-* **目标**：实现长链接转短链接的 REST API (POST/GET)，含重定向逻辑。
-* **技术**：Python/Go/Java/Node + Redis/SQLite。
-* **交付**：API 服务与数据库均需 Docker 化。
+```bash
+# Docker Compose
+docker compose up
 
-### C 全栈：看板任务管理 (Kanban Board) —— ⭐ 推荐
-* **目标**：实现类似 Trello 的任务拖拽 (Todo/Doing/Done) 及数据同步。
-* **技术**：Web 前端 + 后端 API + 数据库。
-* **交付**：前后端及数据库必须通过 `docker compose` 一键联调。
+# 或者使用 Docker Compose
+docker compose up --build -d
 
-### D 跨平台/小程序：咖啡点单 (Coffee Order App)
-* **目标**：模拟点单流程（商品列表、规格选择、购物车）。
-* **技术**：Uni-app / Taro / Flutter / 微信原生。
-* **交付**：**客户端代码本地运行** + **后端 API/DB 必须 Docker 化**。
+# 或者使用 Makefile
+make up
+```
 
-### E 原生移动端：健身计时器 (Fitness Timer)
-* **目标**：HIIT 倒计时工具，支持后台运行和声音提示。
-* **技术**：Swift / Kotlin / React Native。
-* **交付**：**App 代码本地运行** + **后端 API/DB 必须 Docker 化**。
+启动后将包含以下服务：
+- **前端页面**: [http://localhost:3001](http://localhost:3001)
+- **后端 API**: [http://localhost:8000](http://localhost:8000)
+- **API 文档**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **数据库**: MySQL (端口 3306)
 
----
-
-## 📦 统一交付标准 (Unified Delivery Standard)
-
-本项目强制要求 **Docker 化交付**。请根据你选择的题目类型，遵守以下目录结构和规范：
-
-### 1. 针对 Web / 全栈 / 纯后端 (Type A, B, C)
-你的仓库必须包含完整的前后端容器配置。
-* **结构示例**：
-  ```text
-  ├── frontend/ (含 Dockerfile)
-  ├── backend/  (含 Dockerfile)
-  └── docker-compose.yml  <-- 必须包含，负责启动所有服务
-### 验收标准
-阅卷官执行 `docker compose up` 后，浏览器打开 `localhost:xxxx` 即可正常使用。
-
-### 2. 针对 移动端/小程序
-我们理解 App 无法在容器内运行，因此采取
-**“后端装箱，前端裸奔”**的策略。
-
-* **结构示例**：
-  ```text
-  ├── client/             <-- 放置 App/小程序源码 (无需 Docker)
-  ├── backend/            <-- 放置后端 API 源码 (必须 Docker)
-  └── docker-compose.yml  <-- 仅负责启动 backend 和 db
-  ### 验收标准
-* **GitHub Actions** 必须能成功构建 Backend 镜像。
-* **必须提供录屏**：展示 App 在模拟器/真机上运行，并成功连接 Docker 后端的演示。
-
-> ⚠️ **网络连接提示 (Crucial Tip)**：
-> 在模拟器中访问 Docker 后端时，**不能使用 `localhost`**：
-> * **Android 模拟器**：请尝试 `10.0.2.2:端口`
-> * **真机调试**：请使用电脑的局域网 IP (如 `192.168.1.x`)
-> * *请在代码中预留 Base URL 配置项。*
+停止服务：
+```bash
+docker compose down
+# 或者
+make down
+```
 
 ---
 
-## 🚨 验收红线 (Red Lines)
-**出现以下情况将直接淘汰，不予人工审核：**
+## 🛠 本地开发设置
 
-* ❌ **CI 构建失败**：GitHub Actions 页面显示红色 ❌ (Build Failed)。
-* ❌ **无 Docker 配置**：根目录找不到有效 `docker-compose.yml`。
-* ❌ **UI 审美缺失**：界面排版混乱、无间距、使用浏览器默认样式。
-* ❌ **缺少演示视频**：移动端/小程序未提供真机运行录屏。
+如果你想在不使用 Docker 的情况下（数据库除外）本地运行前端和后端，请按照以下步骤操作。
 
----
+### 前置要求
+- Node.js (v18+)
+- pnpm
+- Python (3.10+)
+- MySQL Server (本地运行或通过 Docker 运行)
 
-## 🚀 操作流程 (How to Start)
+### 1. 数据库设置
 
-1.  **领取考卷**：点击本页面右上角绿色按钮 **[Use this template]** -> **Create a new repository**。
-    * *注意：请将你的仓库设为 **Public**，否则 Actions 可能无法运行。*
-2.  **AI 开发**：使用 Cursor/Antigravity 等工具完成代码。
-3.  **机器自测**：Push 代码后，点击仓库顶部的 **[Actions]** 标签，确保显示 ✅ (Green)。
-4.  **提交作业**：
-    * 请将 **GitHub 仓库链接** + **Actions 绿灯截图** + **演示视频** 提交给招聘方。
+确保你有一个正在运行的 MySQL 数据库。你可以使用 docker 单独启动数据库服务：
+
+```bash
+docker compose up -d db
+```
+
+### 2. 后端设置
+
+进入 `backend` 目录：
+
+```bash
+cd backend
+```
+
+创建虚拟环境并激活：
+```bash
+python -m venv venv
+source venv/bin/activate  # Windows 用户使用: venv\Scripts\activate
+```
+
+安装依赖：
+```bash
+pip install -r requirements.txt
+```
+
+配置环境变量：
+```bash
+cp .env.example .env
+```
+> **注意：** 请更新 `.env` 文件以指向你的本地 MySQL 实例（例如，如果是在本地直接运行 MySQL 而非 Docker，可能需要设置 `MYSQL_SERVER=localhost`）。
+
+运行服务器：
+```bash
+uvicorn app.main:app --reload
+```
+API 服务将在 http://localhost:8000 启动。
+
+### 3. 前端设置
+
+进入 `frontend` 目录：
+
+```bash
+cd frontend
+```
+
+安装依赖：
+```bash
+pnpm install
+```
+
+配置环境变量：
+```bash
+cp .env.example .env
+```
+
+启动开发服务器：
+```bash
+pnpm dev
+```
+前端页面将在 http://localhost:5173 (默认 Vite 端口) 或终端显示的端口上可用。
+
+## 📁 项目结构
+
+```
+.
+├── backend/            # FastAPI 后端
+│   ├── app/            # 应用源代码
+│   │   ├── api/        # API 接口端点
+│   │   ├── core/       # 核心配置与数据库连接
+│   │   ├── models/     # 数据库模型
+│   │   ├── schemas/    # Pydantic 模式 (Schemas)
+│   │   └── main.py     # 程序入口
+│   └── requirements.txt
+├── frontend/           # React 前端 (Vite)
+│   ├── src/
+│   │   ├── components/ # UI 组件
+│   │   ├── features/   # 功能模块 (如看板 Kanban)
+│   │   └── api/        # API 客户端封装
+│   └── package.json
+├── docs/               # 项目文档
+└── docker-compose.yml  # Docker 服务配置
+```
+
+## 📚 文档
+
+详细文档请查阅 `docs/` 目录。
